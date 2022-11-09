@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+#------------------------------------------------------------------------------
+# Modified Calculate Utilities 3.7.2.17
+# Processed template files:
+# /var/calculate/templates/taiga/init.taiga-async
+# To modify this file, create a /etc/init.d/taiga-async.clt template.
+#------------------------------------------------------------------------------
+# Copyright 2022 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="Taiga-async-tasks daemon"
+description="Async tasks, like bulk email or exports generation"
+pidfile=/run/taiga-async.pid
+command_user=taiga
+output_log=/var/log/taiga-async.log
+error_log=/var/log/taiga-async.log
+directory=/var/calculate/www/taiga/taiga-back
+start_stop_daemon_args=""
+command="/var/calculate/www/taiga/taiga-back/.venv/bin/celery"
+command_args="-A taiga.celery worker -B --concurrency 4 -l INFO"
+command_background=true
+extra_commands=""
+
+source /var/calculate/www/taiga/taiga-back/.venv/bin/activate
+#depend() {
+#    need rabbitmq
+#}
+
+start_pre() {
+    checkpath -f -o taiga -m 0600 /var/log/taiga-async.log
+}
