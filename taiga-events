@@ -1,0 +1,30 @@
+#!/sbin/openrc-run
+#------------------------------------------------------------------------------
+# Modified Calculate Utilities 3.7.2.17
+# Processed template files:
+# /var/calculate/templates/taiga/init.taiga-events
+# To modify this file, create a /etc/init.d/taiga-events.clt template.
+#------------------------------------------------------------------------------
+# Copyright 2022 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="Taiga-events daemon"
+description="Websockets gateway"
+pidfile=/run/taiga-events.pid
+command_user=taiga
+output_log=/var/log/taiga-events.log
+error_log=/var/log/taiga-events.log
+directory=/var/calculate/www/taiga/taiga-events
+start_stop_daemon_args=""
+command="npm"
+command_args="run start:production"
+command_background=true
+source /var/calculate/www/taiga/.node-live/bin/activate
+
+#depend() {
+#
+#}
+
+start_pre() {
+    checkpath -f -o taiga -m 0600 /var/log/taiga-events.log
+}
