@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+#------------------------------------------------------------------------------
+# Modified Calculate Utilities 3.7.2.17
+# Processed template files:
+# /var/calculate/templates/taiga/init.taiga-protected
+# To modify this file, create a /etc/init.d/taiga-protected.clt template.
+#------------------------------------------------------------------------------
+# Copyright 2022 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="Taiga-protected daemon"
+description="Protected attachments"
+pidfile=/run/taiga-protected.pid
+command_user=taiga
+output_log=/var/log/taiga-protected.log
+error_log=/var/log/taiga-protected.log
+directory=/var/calculate/www/taiga/taiga-protected
+start_stop_daemon_args=""
+command="/var/calculate/www/taiga/taiga-protected/.venv/bin/gunicorn"
+command_args="--workers 4 --timeout 60 --log-level=info --access-logfile - --bind 0.0.0.0:8003 server:app"
+command_background=true
+source /var/calculate/www/taiga/taiga-protected/.venv/bin/activate
+
+#depend() {
+#    need nginx rabbitmq postgresql
+#    need rabbitmq postgresql
+#}
+
+start_pre() {
+    checkpath -f -o taiga -m 0600 /var/log/taiga-protected.log
+}
