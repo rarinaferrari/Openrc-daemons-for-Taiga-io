@@ -12,5 +12,5 @@ command_args="${RC_MONITOR_RESTART}"
 command_background=1
 
 depend() {
-        need taiga
+        need taiga-back
 }
