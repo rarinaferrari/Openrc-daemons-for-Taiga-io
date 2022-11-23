@@ -1,0 +1,16 @@
+#!/sbin/openrc-run
+
+#------------------------------------------------------------------------------
+# Modified Calculate Utilities 3.7.3.0
+# Processed template files:
+# /var/db/repos/container/profiles/templates/taiga/check-crashed/init.check-cras
+# To modify this file, create a /etc/init.d/check-crashed.clt template.
+#------------------------------------------------------------------------------
+pidfile="/run/check_crashed.pid"
+command="/usr/sbin/check-crashed"
+command_args="${RC_MONITOR_RESTART}"
+command_background=1
+
+depend() {
+        need taiga
+}
